@@ -9,14 +9,9 @@ _start:
 	syscall
 	cmp	$1, %rax
 	je	pid1
-	mov	$1, %rax	# write
-	mov	$1, %rdi
 	mov	$nopid1, %rsi
 	mov	$18, %rdx
-	syscall
-	mov	$60, %rax	# _exit
-	mov	$1, %rdi
-	syscall
+	jmp	fail
 pid1:
 	mov	$57, %rax	# fork
 	syscall
@@ -35,10 +30,11 @@ child:
 	xor	%rsi, %rsi
 	xor	%rdx, %rdx
 	syscall
-	mov	$1, %rax	# write
-	mov	$1, %rdi
 	mov	$norc, %rsi
 	mov	$34, %rdx
+fail:
+	mov	$1, %rax	# write
+	mov	$1, %rdi
 	syscall
 	mov	$60, %rax	# _exit
 	mov	$1, %rdi
